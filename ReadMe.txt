@@ -1,6 +1,8 @@
 Mini projet : Gestion d'école ;
 Réalisé par : Elhayadi Mohammed - Jittou Asmaa  ,  binome :29 , ISIL 2019/2020
 
+Run Client using sur la repertoire (./projet): npm start 
+Run Server using sur la repertoire (./projet/Server): node Server.js
 
 L'application de gestion d'école contient 3 Espaces : Espace Etudiant , Espace Professeur et Espace Administrateur .
 
