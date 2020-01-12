@@ -19,7 +19,7 @@ export default class Login extends Component {
             password: this.state.Password
         }
         console.log(User);
-        axios.post('http://localhost:3029/admin/Login', User)
+        axios.post('http://51.91.98.162:3029/admin/Login', User)
             .then(res => {
                 if (res.data.Login == true) {
                     this.props.Connected();

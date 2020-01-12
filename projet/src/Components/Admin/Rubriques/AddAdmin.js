@@ -14,7 +14,7 @@ export default class AddAdmin extends Component {
             email: this.state.email,
             password: this.state.password
         }
-        axios.post('http://localhost:3029/admin/add', Objet)
+        axios.post('http://51.91.98.162:3029/admin/add', Objet)
             .then(res => {
                 alert(res.data.msg)
             })

@@ -11,15 +11,15 @@ export default class Home extends Component {
     }
     componentWillMount() {
         setInterval(() => {
-            Axios.get('http://localhost:3029/admin/Publication/')
+            Axios.get('http://51.91.98.162:3029/admin/Publication/')
                 .then((res) => {
                     this.setState({ data: res.data });
                 })
-            Axios.get('http://localhost:3029/admin/filiere/')
+            Axios.get('http://51.91.98.162:3029/admin/filiere/')
                 .then(res => {
                     this.setState({ Filiere: res.data.length })
                 })
-            Axios.get('http://localhost:3029/admin/Etudiant/')
+            Axios.get('http://51.91.98.162:3029/admin/Etudiant/')
                 .then(res => {
                     this.setState({ Etudiant: res.data.length })
                 })

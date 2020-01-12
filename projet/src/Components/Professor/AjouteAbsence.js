@@ -14,13 +14,13 @@ export default class AjouteAbsence extends Component {
   }
   componentDidMount() {
     setInterval(() => {
-      axios.get('http://localhost:3029/professor/absence')
+      axios.get('http://51.91.98.162:3029/professor/absence')
         .then(res => {
           this.setState({ data: res.data })
         })
     }, 1000);
     setInterval(() => {
-      axios.get('http://localhost:3029/admin/Etudiant')
+      axios.get('http://51.91.98.162:3029/admin/Etudiant')
         .then(res => {
           this.setState({ etudiant: res.data })
         })
@@ -39,7 +39,7 @@ export default class AjouteAbsence extends Component {
       heure: hours + ':' + min,
       absence: [this.state.absence]
     }
-    axios.post('http://localhost:3029/admin/absence/add', Absence)
+    axios.post('http://51.91.98.162:3029/admin/absence/add', Absence)
       .then(res => {
         alert(res.data.msg)
       })

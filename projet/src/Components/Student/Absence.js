@@ -11,7 +11,7 @@ export default class Absence extends Component {
   }
   componentDidMount() {
     setInterval(() => {
-      axios.get('http://localhost:3029/etudiant/absence')
+      axios.get('http://51.91.98.162:3029/etudiant/absence')
         .then(res => {
           this.setState({ absence: res.data })
         })
@@ -22,7 +22,7 @@ export default class Absence extends Component {
       cne: '1654897', //with session
       reclamation: this.state.reclamation
     }
-    axios.post('http://localhost:3029/etudiant/reclamation/add/', Reclamation)
+    axios.post('http://51.91.98.162:3029/etudiant/reclamation/add/', Reclamation)
       .then(res => {
         alert(res.data.msg)
       })

@@ -14,7 +14,7 @@ export default class Publication extends Component {
             Body: this.state.Body,
             Url: this.state.Url
         }
-        Axios.post('http://localhost:3029/admin/Publication/add', Pub)
+        Axios.post('http://51.91.98.162:3029/admin/Publication/add', Pub)
             .then(res => {
                 alert(res.data.msg)
             })

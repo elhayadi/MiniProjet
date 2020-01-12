@@ -12,11 +12,11 @@ export default class AddMatiere extends Component {
     }
     componentDidMount() {
         setInterval(() => {
-            axios.get('http://localhost:3029/admin/filiere/')
+            axios.get('http://51.91.98.162:3029/admin/filiere/')
                 .then(res => {
                     this.setState({ Filiere: res.data })
                 })
-            axios.get('http://localhost:3029/admin/matiere/')
+            axios.get('http://51.91.98.162:3029/admin/matiere/')
                 .then(res => {
                     this.setState({ data: res.data })
                 })
@@ -27,7 +27,7 @@ export default class AddMatiere extends Component {
             Name: this.state.name,
             Filiere: this.state.option
         }
-        axios.post('http://localhost:3029/admin/matiere/add', Matiere)
+        axios.post('http://51.91.98.162:3029/admin/matiere/add', Matiere)
             .then(res => {
                 alert(res.data.msg)
             })

@@ -14,7 +14,7 @@ export default class AjouteNotes extends Component {
   };
   componentDidMount() {
     setInterval(() => {
-      axios.get('http://localhost:3029/admin/Etudiant')
+      axios.get('http://51.91.98.162:3029/admin/Etudiant')
         .then(res => {
           this.setState({ etudiant: res.data })
         })
@@ -29,7 +29,7 @@ export default class AjouteNotes extends Component {
       note1: this.state.note1,
       note2: this.state.note2
     }
-    axios.post('http://localhost:3029/professor/note/add', Note)
+    axios.post('http://51.91.98.162:3029/professor/note/add', Note)
       .then(res => {
         alert(res.data.msg)
       })
