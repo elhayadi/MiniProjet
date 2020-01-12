@@ -17,15 +17,15 @@ export default class AddProf extends Component {
     }
     componentDidMount() {
         setInterval(() => {
-            axios.get('http://localhost:5000/admin/filiere/')
+            axios.get('http://localhost:3029/admin/filiere/')
                 .then(res => {
                     this.setState({ Filiere: res.data })
                 })
-            axios.get('http://localhost:5000/admin/matiere/')
+            axios.get('http://localhost:3029/admin/matiere/')
                 .then(res => {
                     this.setState({ Matiere: res.data })
                 })
-            axios.get('http://localhost:5000/admin/professor/')
+            axios.get('http://localhost:3029/admin/professor/')
                 .then(res => {
                     this.setState({ data: res.data })
                 })
@@ -36,13 +36,13 @@ export default class AddProf extends Component {
         const Prof = {
             cin: this.state.cin,
             nomComplet: this.state.name,
-            filiere: this.state.filiere,
             matiere: this.state.matiere,
+            filiere: this.state.filiere,
             email: this.state.email,
             password: this.state.password
         }
         console.log(Prof)
-        axios.post('http://localhost:5000/admin/Professor/add', Prof)
+        axios.post('http://localhost:3029/admin/Professor/add', Prof)
             .then(res => {
                 alert(res.data.msg)
             })

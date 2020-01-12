@@ -1,106 +1,113 @@
+
 import React, { Component } from 'react';
-
-export default class AjoutAbsence extends Component {
+import axios from 'axios';
+import { Container, Form, Input, Button } from 'reactstrap';
+import { Table } from 'evergreen-ui';
+export default class AjouteAbsence extends Component {
   state = {
-    selectEtudiant: '',
-    selectMatiere: '',
+    absence: [],
+    matiere: '',
     date: '',
-    heure: ''
-  };
-  handleOnChangeDate = e => {
-    this.setState({
-      date: e.target.value
-    });
-  };
-  handleOnChangeHeure = e => {
-    this.setState({
-      heure: e.target.value
-    });
-  };
-  handleOnChangeEtudiant = e => {
-    this.setState({
-      selectEtudiant: e.target.value
-    });
-  };
-  handleOnChangeMatiere = e => {
-    this.setState({
-      selectMatiere: e.target.value
-    });
-  };
-  onSubmit = async e => {
+    heure: '',
+    data: [],
+    etudiant: []
+  }
+  componentDidMount() {
+    setInterval(() => {
+      axios.get('http://localhost:3029/professor/absence')
+        .then(res => {
+          this.setState({ data: res.data })
+        })
+    }, 1000);
+    setInterval(() => {
+      axios.get('http://localhost:3029/admin/Etudiant')
+        .then(res => {
+          this.setState({ etudiant: res.data })
+        })
+    }, 1000);
 
-    e.preventDefault();
-    const data = {
-      selectEtudiant: this.state.selectEtudiant,
-      selectMatiere: this.state.selectMatiere,
-      date: this.state.date,
-      heure: this.state.heure
+  }
+  AddHandler = () => {
+    var date = new Date().getDate();
+    var month = new Date().getMonth();
+    var year = new Date().getFullYear(); //Current Year
+    var hours = new Date().getHours(); //Current Hours
+    var min = new Date().getMinutes(); //Current Minutes
+    const Absence = {
+      matiere: 'java',
+      date: date + '/' + month + '/' + year,
+      heure: hours + ':' + min,
+      absence: [this.state.absence]
     }
-  };
+    axios.post('http://localhost:3029/admin/absence/add', Absence)
+      .then(res => {
+        alert(res.data.msg)
+      })
+  }
+
   render() {
     return (
-      <div >
-        <div class="container">
-          <div class="row">
-            <div class="col-sm">
-              <div>
-                <table class="table table-light">
-                  <thead>
+      <div className='row'>
+        <div className='column'>
+          <Container className="App" style={{ padding: 100 }}>
+            <h2>Ajouter Absence</h2>
+            <Form className="form">
+              <Table>
+                <Table.Head>
+                  <Table.TextHeaderCell>
+                    Etudiant
+                            </Table.TextHeaderCell>
+                  <Table.TextHeaderCell>
+                    Absence
+                            </Table.TextHeaderCell>
+                </Table.Head>
+                <Table.Body height={240}>
+                  {this.state.etudiant.map(profile => (
+                    <Table.Row >
+                      <input
+                        type="hidden"
+                        onChange={(e) => { this.setState({ absence: [profile.cne] }) }}
+                      />
+                      <Table.TextCell>{profile.nomComplet}</Table.TextCell>
+                      <Table.TextCell><Input type="checkbox" /></Table.TextCell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+              <Button onClick={this.AddHandler} >Valider</Button>
+            </Form>
+          </Container>
 
-                    <tr>
-                      <th scope="col" style={{ color: " #A0522D", fontFamily: "Castellar" }}>Etudiant</th>
-                      <th scope="col" style={{ color: " #A0522D", fontFamily: "Castellar" }}>Date</th>
-                      <th scope="col" style={{ color: " #A0522D", fontFamily: "Castellar" }}>Heure</th>
-                      <th scope="col" style={{ color: " #A0522D", fontFamily: "Castellar" }}>matiere</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Mark</td>
-                      <td>Mark</td>
-                      <td>Otto</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-            </div>
-
-
-
-            <div class="col-sm">
-              <div>
-                <form onSubmit={this.onSubmit}>
-                  <div class="form-group">
-
-                    <table class="table table-dark table-striped">
-                      <thead>
-
-                        <tr>
-                          <th scope="col" style={{ color: " #A0522D", fontFamily: "Castellar" }}>Etudiant</th>
-                          <th scope="col" style={{ color: " #A0522D", fontFamily: "Castellar" }}>Absence</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Mark</td>
-                          <td>
-                            <input type="checkbox" />
-
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-
-                  </div>
-                  <button type="submit" class="btn btn-primary" style={{ marginLeft: "80%", backgroundColor: " #A0522D", borderColor: "white" }}>Ajouter</button>
-                </form>
-              </div>
-            </div>
-
-          </div>
         </div>
-      </div>
+        <div className='column'>
+          <h2>Liste des Absences</h2>
+          <Table>
+            <Table.Head>
+              <Table.TextHeaderCell>
+                Etudiant
+                            </Table.TextHeaderCell>
+              <Table.TextHeaderCell>
+                Matière
+                            </Table.TextHeaderCell>
+              <Table.TextHeaderCell>
+                Date
+                            </Table.TextHeaderCell>
+              <Table.TextHeaderCell>
+                Heure
+                            </Table.TextHeaderCell>
+            </Table.Head>
+            <Table.Body height={240}>
+              {this.state.data.map(profile => (
+                <Table.Row key={profile.cne} >
+                  <Table.TextCell>{profile.cne}</Table.TextCell>
+                  <Table.TextCell>{profile.matiere}</Table.TextCell>
+                  <Table.TextCell>{profile.date}</Table.TextCell>
+                  <Table.TextCell>{profile.heure}</Table.TextCell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </div> </div>
     );
   }
 }

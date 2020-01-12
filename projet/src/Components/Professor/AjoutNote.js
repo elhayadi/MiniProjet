@@ -1,65 +1,78 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import { Container, Form, Input, Button } from 'reactstrap';
+import { Table } from 'evergreen-ui';
 
-import 'bootstrap/dist/css/bootstrap.css';
+
 export default class AjouteNotes extends Component {
   state = {
-    etudiant: '',
-    note: ''
+    cne: '',
+    matiere: '',
+    note1: '',
+    note2: '',
+    etudiant: []
   };
-  handleOnChangeEtudiant = e => {
-    this.setState({
-      etudiant: e.target.value
-    });
-  };
-  handleOnChangeNote = e => {
-    this.setState({
-      note: e.target.value
-    });
-  };
+  componentDidMount() {
+    setInterval(() => {
+      axios.get('http://localhost:3029/admin/Etudiant')
+        .then(res => {
+          this.setState({ etudiant: res.data })
+        })
+    }, 1000);
+
+  }
+
+  AddHandler = () => {
+    const Note = {
+      cne: this.state.cne,
+      matiere: 'java',//ajouter la matiere d prof b session!!!!
+      note1: this.state.note1,
+      note2: this.state.note2
+    }
+    axios.post('http://localhost:3029/professor/note/add', Note)
+      .then(res => {
+        alert(res.data.msg)
+      })
+  }
 
   render() {
     return (
       <div >
         <div class="container">
           <div class="row">
-            <div class="col-sm">
-              <div>
-                <table class="table table-light table-striped">
-                  <thead>
 
-                    <tr>
-                      <th scope="col" style={{ color: " #A0522D", fontFamily: "Castellar" }}>Etudiant</th>
-                      <th scope="col" style={{ color: " #A0522D", fontFamily: "Castellar" }}>Note1</th>
-                      <th scope="col" style={{ color: " #A0522D", fontFamily: "Castellar" }}>Note2</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Mark</td>
-                      <td>Mark</td>
-                      <td>Otto</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-            </div>
-            <div class="col-sm">
-              <div>
-                <form method>
-                  <div class="form-group">
-                    <label style={{ color: " #A0522D", fontFamily: "Castellar" }}>Etudiant</label><br />
-                    <select value={this.state.etudiant} onChange={this.handleOnChangeEtudiant} class="form-control inputstl" id="expertise">
-                      <option value="" disabled selected>Choose your option</option>
-                      <option value="1">Option 1</option>
-                    </select> <br /><label style={{ color: " #A0522D", fontFamily: "Castellar" }}> Ajouter Note</label>
-                    <input type="text" class="form-control" value={this.state.note} onChange={this.handleOnChangeNote} on placeholder="Ajouter Note" />
-                  </div>
-                  <button type="submit" class="btn btn-primary" style={{ marginLeft: "80%", backgroundColor: "#A0522D", borderColor: "white" }}>Ajouter</button>
-                </form>
-              </div>
-            </div>
-
+            <Container className="App" style={{ padding: 100 }}>
+              <h2>Ajouter Notes</h2>
+              <Form className="form">
+                <Table>
+                  <Table.Head>
+                    <Table.TextHeaderCell>
+                      Etudiant
+                            </Table.TextHeaderCell>
+                    <Table.TextHeaderCell>
+                      Note1
+                            </Table.TextHeaderCell>
+                    <Table.TextHeaderCell>
+                      Note2
+                            </Table.TextHeaderCell>
+                  </Table.Head>
+                  <Table.Body height={240}>
+                    {this.state.etudiant.map(profile => (
+                      <Table.Row >
+                        <input
+                          type="hidden"
+                          onChange={(e) => { this.setState({ cne: profile.cne }) }}
+                        />
+                        <Table.TextCell>{profile.nomComplet}</Table.TextCell>
+                        <Table.TextCell><Input type="text" placeholder="Note1" onChange={(e) => { this.setState({ note1: e.target.value }) }} /></Table.TextCell>
+                        <Table.TextCell><Input type="text" placeholder="Note2" onChange={(e) => { this.setState({ note2: e.target.value }) }} /></Table.TextCell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table>
+                <Button onClick={this.AddHandler} >Enregistrer</Button>
+              </Form>
+            </Container>
           </div>
         </div>
 

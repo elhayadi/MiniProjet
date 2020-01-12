@@ -17,19 +17,23 @@ export default class Professor extends Component {
     _isDisConnected = () => {
         this.setState({ connected: false });
     }
+    Hide = () => {
+        this.props.Activate();
+    }
     render() {
         return (
             <div>
+
                 <Router>
                     {
                         this.state.connected ? <NavBar DisConnected={this._isDisConnected} ></NavBar> : ''
                     }
 
-                    <Route path="/professor" render={(props) => this.state.connected ? <Home></Home> : <Login Connected={this._isConnected}  ></Login>}
+                    <Route path="/professor/" render={(props) => this.state.connected ? <Home></Home> : <Login Hide={this.Hide} Connected={this._isConnected}  ></Login>}
                         exact
                     ></Route>
-                    <Route path="/professor/ajoutnotes" component={AjouteNotes}  ></Route>
-                    <Route path="/professor/noteabsence" component={AjoutAbsence} ></Route>
+                    <Route path="/professor/ajoutnotes/" component={AjouteNotes}  ></Route>
+                    <Route path="/professor/noteabsence/" component={AjoutAbsence} ></Route>
                 </Router>
             </div >
         );

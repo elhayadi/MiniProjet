@@ -2,31 +2,51 @@ import React, { Component } from 'react';
 import {
     Container, Col, Form,
     FormGroup, Label, Input,
-    Button,
+    Button, Alert
 } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
+import axios from 'axios';
+import '../../App.css'
 export default class Login extends Component {
     state = {
         Username: '',
-        Password: '',
-        Name: ''
+        Password: ''
     }
+
     LoginHandler = () => {
-        this.props.Connected();
-        return (<Redirect to='/admin'></Redirect>)
+        let User = {
+            email: this.state.Username,
+            password: this.state.Password
+        }
+        console.log(User);
+        axios.post('http://localhost:3029/professor/Login', User)
+            .then(res => {
+                if (res.data.Login == true) {
+                    this.props.Hide();
+                    this.props.Connected();
+
+                    let link = res.data.id;
+                    return (<Redirect to={'/professor/'}></Redirect>)
+                } else {
+                    alert("Wrong Password")
+                }
+            })
+
     }
 
     render() {
         return (
-            <Container className="App" style={{ paddingTop: 100, paddingLeft: 300, paddingRight: 300 }}>
-                <h2>Log In</h2>
-                <Form className="form">
+            <Container style={{ paddingTop: 30, paddingBottom: 30, paddingLeft: 300, paddingRight: 300, }}>
+
+                <Alert color="dark"><center><h2>Espace Professeur</h2></center></Alert><h2>Log In</h2>
+                <Form className="card">
                     <Col>
                         <FormGroup>
                             <Label>CNE</Label>
                             <Input
-                                type="CNE"
-                                placeholder="#0000000000"
+                                type="email"
+                                placeholder="myemail@exemple.com"
+                                onChange={(e) => this.setState({ Username: e.target.value })}
                             />
                         </FormGroup>
                     </Col>
@@ -36,7 +56,7 @@ export default class Login extends Component {
                             <Input
                                 type="password"
                                 placeholder="********"
-                                onChange
+                                onChange={(e) => this.setState({ Password: e.target.value })}
                             />
                         </FormGroup>
                     </Col>

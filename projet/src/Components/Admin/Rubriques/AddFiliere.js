@@ -10,7 +10,7 @@ export default class AddFiliere extends Component {
     }
     componentDidMount() {
         setInterval(() => {
-            axios.get('http://localhost:5000/admin/filiere/')
+            axios.get('http://localhost:3029/admin/filiere/')
                 .then(res => {
                     this.setState({ data: res.data })
                 })
@@ -21,7 +21,7 @@ export default class AddFiliere extends Component {
         const Filiere = {
             Name: this.state.name
         }
-        axios.post('http://localhost:5000/admin/filiere/add', Filiere)
+        axios.post('http://localhost:3029/admin/filiere/add', Filiere)
             .then(res => {
                 alert(res.data.msg)
             })

@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 const etudiant = new Schema({
   cne: {
-    type: Number,
+    type: String,
     required: true
   },
   cin: {
-    type: Number,
+    type: String,
     required: true
   },
   nomComplet: {
@@ -15,7 +15,7 @@ const etudiant = new Schema({
     required: true
   },
 
-  filliere: {
+  filiere: {
     type: String,
     required: true
   },

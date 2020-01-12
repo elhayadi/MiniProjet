@@ -15,11 +15,11 @@ export default class AddEtudiant extends Component {
         password: ''
     }
     componentWillMount() {
-        axios.get('http://localhost:5000/admin/filiere/')
+        axios.get('http://localhost:3029/admin/filiere/')
             .then(res => {
                 this.setState({ Filiere: res.data })
             })
-        axios.get('http://localhost:5000/admin/Etudiant/')
+        axios.get('http://localhost:3029/admin/Etudiant/')
             .then(res => {
                 this.setState({ data: res.data })
             })
@@ -33,7 +33,7 @@ export default class AddEtudiant extends Component {
             email: this.state.email,
             password: this.state.password
         }
-        axios.post('http://localhost:5000/admin/Etudiant/add', Objet)
+        axios.post('http://localhost:3029/admin/Etudiant/add', Objet)
             .then(res => {
                 alert(res.data.msg)
             })

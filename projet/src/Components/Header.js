@@ -12,9 +12,9 @@ export default class NavBar extends Component {
 
         const header = (<Navbar color="light" light expand="md">
             <NavbarBrand to="/">G-ESTE</NavbarBrand>
-            <NavLink onClick={this.props._Visibility} ><Link to='/student' >Student</Link></NavLink>
-            <NavLink onClick={this.props._Visibility} ><Link to='/professor'  >Professor</Link></NavLink>
-            <NavLink onClick={this.props._Visibility} ><Link to='/admin' >Admin</Link></NavLink>
+            <NavLink  ><Link to='/student' >Student</Link></NavLink>
+            <NavLink ><Link to='/professor'  >Professor</Link></NavLink>
+            <NavLink ><Link to='/admin' >Admin</Link></NavLink>
         </Navbar>)
         return (
             <div>

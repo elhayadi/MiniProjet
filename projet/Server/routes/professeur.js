@@ -1,51 +1,72 @@
+
 const router = require('express').Router();
-let Article = require('../models/note');
-router.route('/').get((req, res) => {
-    Article.find()
-        .then(articles => res.json(articles))
+let Note = require('../models/note');
+let Absence = require('../models/absence');
+let Professor = require('../models/professeur')
+//*********************************Note************************************** */
+router.route('/note').get((req, res) => {
+    Note.find()
+        .then(Notes => res.json(Notes))
         .catch(err => res.status(400).json('Error: ' + err));
 });
-router.route('/update').post((req, res) => {
-    Article.findById(req.body.id)
-        .then(article => {
-            article.Name = req.body.Name;
-            article.URL = req.body.URL;
-            article.description = req.body.description;
-            article.vote = Number(req.body.vote);
-            article.save()
-                .then(() => res.json('Article updated!'))
-                .catch(err => res.status(400).json('Error1: ' + err));
-        })
-        .catch(err => res.status(400).json('Error2: ' + err));
-});
 
-router.route('/add').post((req, res) => {
-    const Name = req.body.Name;
-    const URL = req.body.URL;
-    const description = req.body.description;
-    const vote = Number(req.body.vote);
 
-    const newArticle = new Article({
-        Name,
-        URL,
-        description,
-        vote,
+router.route('/note/add').post((req, res) => {
+    const cne = req.body.cne;
+    const matiere = req.body.matiere;
+    const note1 = req.body.note1;
+    const note2 = req.body.note2;
+    const newNote = new Note({
+        cne: cne,
+        matiere: matiere,
+        note1: note1,
+        note2: note2
     });
-    newArticle.save()
-        .then(() => res.json('Article added!'))
-        .catch(err => res.status(400).json('Error: ' + err));
+    console.log(newNote)
+    newNote.save()
+        .then(() => res.json({ msg: 'Note added!' }))
+        .catch(err => res.status(400).json({ msg: 'Error !!!' }));
 });
 
-router.route('/add').post((req, res) => {
-    const idEtudiant = req.body.idEtudiant;
-    const reclamText = req.body.Reclamation;
-    const newReclamation = new Reclamation({
-        idEtudiant,
-        reclamText
-    });
-    newReclamation.save()
-        .then(() => res.json('Reclamation added!'))
+
+/**************************ABSNECES*********************/
+router.route('/absence').get((req, res) => {
+    Absence.find()
+        .then(Absence => res.json(Absence))
         .catch(err => res.status(400).json('Error: ' + err));
 });
+router.route('/absence/add').post((req, res) => {
+    const cne = req.body.cne;
+    const matiere = req.body.matiere;
+    const date = req.body.date;
+    const heure = req.body.heure;
+    const absence = req.body.absence;
 
+
+    const newAbsence = new Absence({
+
+        matiere: matiere,
+        date: date,
+        heure: heure,
+        absence: [{
+            "cne": absence
+        }]
+    }); console.log(newAbsence);
+    newAbsence.save()
+        .then(() => res.json({ msg: 'Ajouter avec succès' }))
+        .catch(err => res.status(400).json({ msg: 'erreur!!' }));
+});
+//********************************Login******************************************* */
+router.route('/Login').post((req, res) => {
+    const email = req.body.email;
+    const password = req.body.password
+
+    const newProfessor = {
+        email: email,
+        password: password
+    }
+    Professor.findOne(newProfessor)
+        .then(User => res.json({ id: User._id, Login: true }))
+        .catch(err => res.json({ Login: false }));
+});
 module.exports = router;

@@ -16,6 +16,9 @@ export default class Student extends Component {
     _isDisConnected = () => {
         this.setState({ connected: false });
     }
+    Hide = () => {
+        this.props.Activate()
+    }
     render() {
         return (
             <div>
@@ -24,7 +27,7 @@ export default class Student extends Component {
                         this.state.connected ? <NavBar DisConnected={this._isDisConnected} ></NavBar> : ''
                     }
 
-                    <Route path="/student" render={(props) => this.state.connected ? <Home></Home> : <Login Connected={this._isConnected}  ></Login>}
+                    <Route path="/student" render={(props) => this.state.connected ? <Home></Home> : <Login Hide={this.Hide} Connected={this._isConnected}  ></Login>}
                         exact
                     ></Route>
                     <Route path="/student/notes" component={Notes}  ></Route>

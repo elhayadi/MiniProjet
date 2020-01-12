@@ -3,7 +3,8 @@ let Matiere = require('../models/matiere');
 let Filiere = require('../models/filiere');
 let Professor = require('../models/professeur');
 let Etudiant = require('../models/etudiant');
-
+let Admin = require('../models/admin');
+let Publication = require('../models/publication')
 //*********************************Filieres************************************** */
 router.route('/matiere').get((req, res) => {
     Matiere.find()
@@ -106,8 +107,8 @@ router.route('/Professor/add').post((req, res) => {
 
         cin: cin,
         nomComplet: nomComplet,
-        filiere: filiere,
         matiere: matiere,
+        filiere: filiere,
         email: email,
         password: password
     });
@@ -193,4 +194,57 @@ router.route('/Etudiant/add').post((req, res) => {
         .then(() => res.json({ msg: 'Ajouter avec succès' }))
         .catch(err => res.status(400).json({ msg: 'erreur!!' }));
 });
+
+//*********************************Admins************************************** */
+router.route('/Login').post((req, res) => {
+    const email = req.body.email;
+    const password = req.body.password
+
+    const newAdmin = {
+        email: email,
+        password: password
+    }
+    if (email == "admin" && password == "admin") {
+        res.json({ Login: true });
+    } else {
+        Admin.findOne(newAdmin)
+            .then(User => res.json({ id: User._id, Login: true }))
+            .catch(err => res.json({ Login: false }));
+    }
+
+});
+router.route('/add').post((req, res) => {
+    const email = req.body.email;
+    const password = req.body.password
+
+    const newAdmin = new Admin({
+        email: email,
+        password: password
+    });
+    newAdmin.save()
+        .then(() => res.json({ msg: 'Ajouter avec succès' }))
+        .catch(err => res.status(400).json({ msg: 'erreur!!' }));
+});
+//*********************************Publication************************************** */
+router.route('/Publication').get((req, res) => {
+
+    Publication.find()
+        .then(User => res.json(User))
+        .catch(err => res.json(err));
+});
+
+router.route('/Publication/add').post((req, res) => {
+    const Url = req.body.Url;
+    const Body = req.body.Body;
+    const Title = req.body.Title;
+    const newPub = new Publication({
+        Title: Title,
+        Body: Body,
+        Url: Url
+    });
+    newPub.save()
+        .then(() => res.json({ msg: 'Ajouter avec succès' }))
+        .catch(err => res.status(400).json({ msg: 'erreur!!' }));
+});
+
 module.exports = router;

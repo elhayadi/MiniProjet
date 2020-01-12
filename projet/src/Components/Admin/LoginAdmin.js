@@ -3,69 +3,47 @@ import {
     Container, Col, Form,
     FormGroup, Label, Input,
     Button,
+    Alert,
 } from 'reactstrap';
 import './Admin.css'
 import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 export default class Login extends Component {
     state = {
         Username: '',
-        Password: '',
-        Name: ''
+        Password: ''
     }
     LoginHandler = () => {
-        this.props.Connected();
-        return (<Redirect to='/admin'></Redirect>)
-    }
-    RegisterHandler = () => {
-        this.props.Connected();
-        return (<Redirect to='/admin'></Redirect>)
-    }
+        let User = {
+            email: this.state.Username,
+            password: this.state.Password
+        }
+        console.log(User);
+        axios.post('http://localhost:3029/admin/Login', User)
+            .then(res => {
+                if (res.data.Login == true) {
+                    this.props.Connected();
+                    this.props.Hide();
+                    return (<Redirect to={"/admin/" + res.data.id}></Redirect>)
+                } else {
+                    alert("Wrong Password")
+                }
+            })
 
+    }
     render() {
-        return (<div className="row"  >
-            <div className="column" ><Container className="App" style={{ padding: 100 }}>
-                <h2>Sign In</h2>
-                <Form className="form">
-                    <Col>
-                        <FormGroup>
-                            <Label>Name</Label>
-                            <Input
-                                type="name"
-                                placeholder="Name"
-                            />
-                        </FormGroup>
-                    </Col>
-                    <Col>
-                        <FormGroup>
-                            <Label>Email</Label>
-                            <Input
-                                type="email"
-                                placeholder="myemail@email.com"
-                            />
-                        </FormGroup>
-                    </Col>
-                    <Col>
-                        <FormGroup>
-                            <Label >Password</Label>
-                            <Input
-                                type="password"
-                                placeholder="********"
-                            />
-                        </FormGroup>
-                    </Col>
-                    <Button onClick={this.RegisterHandler} >Register</Button>
-                </Form>
-            </Container></div>
+        return (
+            <Container style={{ paddingTop: 30, paddingBottom: 30, paddingLeft: 300, paddingRight: 300, }}>
 
-            <div className="column"><Container className="App" style={{ padding: 100 }}>
-                <h2>Log In</h2>
-                <Form className="form">
+                <Alert color="dark"><center><h2>Espace Administrateur</h2></center></Alert>
+                <Form className="card">
                     <Col>
                         <FormGroup>
-                            <Label>Email</Label>
+                            <Label>Username</Label>
                             <Input
                                 type="email"
-                                placeholder="myemail@email.com"
+                                placeholder="myemail@exemple.com"
+                                onChange={(e) => { this.setState({ Username: e.target.value }) }}
                             />
                         </FormGroup>
                     </Col>
@@ -73,16 +51,15 @@ export default class Login extends Component {
                         <FormGroup>
                             <Label >Password</Label>
                             <Input
+                                onChange={(e) => { this.setState({ Password: e.target.value }) }}
                                 type="password"
                                 placeholder="********"
-                                onChange
                             />
                         </FormGroup>
                     </Col>
                     <Button onClick={this.LoginHandler} >Login</Button>
                 </Form>
-            </Container></div>
-        </div>
+            </Container>
         );
     }
 }

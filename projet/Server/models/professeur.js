@@ -9,11 +9,11 @@ const professeur = new Schema({
   nomComplet: {
     type: String,
     required: true
-  }, filiere: {
-    type: String,
-    required: true
   },
   matiere: {
+    type: String,
+    required: true
+  }, filiere: {
     type: String,
     required: true
   },
@@ -27,5 +27,5 @@ const professeur = new Schema({
   }
 });
 
-const Professor = mongoose.model('etudiant', professeur);
+const Professor = mongoose.model('Professor', professeur);
 module.exports = Professor;
